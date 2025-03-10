@@ -1,62 +1,49 @@
 /* CSS variables for easier theme switching */
 :root {
-  --background-color-light: #ffffff; /* Light mode background color */
+  --background-color-light: #ffcfef; /* Light mode background color */
   --text-color-light: #000000; /* Light mode text color */
   --background-color-dark: #000000; /* Dark mode background color */
   --text-color-dark: #ffffff; /* Dark mode text color */
-  --background-image-light: url("./assets/PINK.jpg"); /* Path to light mode background image */
-  --background-image-dark: url("./assets/DARK.jpg"); /* Path to dark mode background image */
   --button-bg-color: #ffffff; /* Default button background color */
   --button-icon-color: black; /* Default button icon color */
-  --container-background-light: #ffefef; /*Light mode container backgrond*/
-  --container-background-dark: #333; /*Dark mode container background*/
+  --container-background-light: #ffefef; /* Light mode container background */
+  --container-background-dark: #333; /* Dark mode container background */
 }
 
-/* Styles for the light theme */
 [data-theme="light"] body {
-  background-image: var(--background-image-light);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: var(--text-color-light);
-}
-
-/* Styles for the dark theme */
-[data-theme="dark"] body {
-  background-image: var(--background-image-dark);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: var(--text-color-dark);
-  --button-bg-color: #333; /* Dark mode button background color */
-  --button-icon-color: white; /* Dark mode button icon color */
-}
-
-/* Base styles for the body */
-body {
-  transition: background-color 0.2s, color 0.2s; /* Smooth transition for theme changes */
   background-color: var(--background-color-light);
   color: var(--text-color-light);
-  font-family: Georgia, serif;
-  margin: 0;
 }
 
-/* Styles for the main container */
+[data-theme="dark"] body {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+
+body {
+  transition: background-color 0.2s, color 0.2s;
+  background-color: var(--background-color-light); /* Default to light mode */
+  color: var(--text-color-light); /* Default to light mode */
+  font-family: Georgia, serif;
+}
+
 .container {
   max-width: 500px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 20px;
-  background-color: var(--container-background-light);
+  background-color: var(
+    --container-background-light
+  ); /* Default to light mode container background color */
   border-radius: 10px;
-  font-family: Georgia, serif;
+  font-family: Georgia, serif; /* Apply Georgia font to the container */
 }
 
-/* Dark mode styles for the container */
 [data-theme="dark"] .container {
-  background-color: var(--container-background-dark);
+  background-color: var(
+    --container-background-dark
+  ); /* Dark mode container background color */
 }
 
-/* Styles for the task grid (if used) */
 .task-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -64,10 +51,9 @@ body {
   margin-top: 20px;
 }
 
-/* Styles for each task item */
 .task-item {
   display: grid;
-  grid-template-columns: auto 1fr auto auto; /* Adjust columns as needed */
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   padding: 10px;
   border: 1px solid #ccc;
@@ -75,17 +61,14 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Styles for the checkbox */
 .task-item input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* Styles for the task text */
 .task-item span {
-  flex-grow: 1; /* Allow text to expand to fill available space */
+  flex-grow: 1;
 }
 
-/* Styles for edit and delete buttons */
 .task-item .edit-button,
 .task-item .delete-button {
   margin-left: 10px;
@@ -93,15 +76,10 @@ body {
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
-}
-
-/* Style icons within the buttons */
-.task-item .edit-button i,
-.task-item .delete-button i {
+  background-color: transparent;
   color: inherit;
 }
 
-/* Styles for the add task button */
 button.add-task-button {
   padding: 8px 12px;
   cursor: pointer;
@@ -114,33 +92,19 @@ button.add-task-button {
   justify-content: center;
 }
 
-/* Style the icon within the add task button */
 button.add-task-button i {
   color: var(--button-icon-color);
 }
 
-/* Styles for the input container */
 .input-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px; /* Space between input and button */
 }
 
-/* Styles for the text input field */
 input[type="text"] {
-  flex: 1;
+  flex: 1; /* Allow the input to take up available space */
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-
-/* Style for the theme toggle button (adjust as needed) */
-.toggletbutton {
-  align-self: center;
-}
-
-/* Remove bullet points from unordered lists */
-ul {
-  list-style: none;
-  padding-left: 0;
 }
