@@ -126,7 +126,6 @@ button.add-task-button i {
   gap: 10px;
 }
 
-/* Styles for the text input field */
 input[type="text"] {
   flex: 1;
   padding: 8px;
@@ -134,7 +133,6 @@ input[type="text"] {
   border-radius: 5px;
 }
 
-/* Style for the theme toggle button (adjust as needed) */
 .toggletbutton {
   align-self: center;
 }
