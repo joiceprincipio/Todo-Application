@@ -4,11 +4,11 @@
   --text-color-light: #000000; /* Light mode text color */
   --background-color-dark: #000000; /* Dark mode background color */
   --text-color-dark: #ffffff; /* Dark mode text color */
-  --background-image-light: url("PINK.jpg"); /* Path to light mode background image */
-  --background-image-dark: url("DARK.jpg"); /* Path to dark mode background image */
+  --background-image-light: url("./assets/PINK.jpg"); /* Path to light mode background image */
+  --background-image-dark: url("./assets/DARK.jpg"); /* Path to dark mode background image */
   --button-bg-color: #ffffff; /* Default button background color */
   --button-icon-color: black; /* Default button icon color */
-  --container-background-light: #ffefef; /*Light mode container background*/
+  --container-background-light: #ffefef; /*Light mode container backgrond*/
   --container-background-dark: #333; /*Dark mode container background*/
 }
 

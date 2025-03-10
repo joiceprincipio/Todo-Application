@@ -105,7 +105,7 @@ export default function TodoList() {
         </button>
       </div>
       <div>
-        {/* Buttons for filtering tasks */}
+        {/* Buttons for filtering task */}
         <button onClick={() => setFilter("All")}>All</button>
         <button onClick={() => setFilter("Completed")}>Completed</button>
         <button onClick={() => setFilter("Pending")}>Pending</button>
