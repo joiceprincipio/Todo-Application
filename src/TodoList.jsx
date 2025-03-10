@@ -3,7 +3,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome C
 import "./TodoList.css"; // Import custom CSS styles for the TodoList component
 
 export default function TodoList() {
-  // tasks: Array of tasks, each task is an object with text and priority properties
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
   const [editIndex, setEditIndex] = useState(null);
