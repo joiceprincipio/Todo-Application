@@ -9,8 +9,8 @@ export default function TodoList() {
   const [task, setTask] = useState("");
   const [filter, setFilter] = useState("All");
   const [theme, setTheme] = useState("light");
-  const [editingTaskId, setEditingTaskId] = useState(null); // Track the task being edited
-  const [editedTitle, setEditedTitle] = useState(""); // Track the new title for the task
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editedTitle, setEditedTitle] = useState(""); 
 
   // Fetch tasks from the backend
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function TodoList() {
     if (task.trim() === "") return;
 
     const newTask = { title: task, completed: false };
-    console.log("Payload being sent:", newTask); // Debugging
+    console.log("Payload being sent:", newTask); 
 
     try {
       const response = await axios.post(
@@ -99,7 +99,7 @@ export default function TodoList() {
         t.id === taskId ? response.data : t
       );
       setTasks(updatedTasks);
-      setEditingTaskId(null); // Exit edit mode
+      setEditingTaskId(null);
       setEditedTitle("");
     } catch (error) {
       console.error("Error editing task:", error.response);
