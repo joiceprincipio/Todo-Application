@@ -50,7 +50,7 @@ export default function TodoList() {
     const taskToDelete = tasks[index];
 
     try {
-      await axios.delete(http://127.0.0.1:8000/todolist/${taskToDelete.id}/);
+      await axios.delete(`http://127.0.0.1:8000/todolist/${taskToDelete.id}/`);
       setTasks(tasks.filter((_, i) => i !== index));
     } catch (error) {
       console.error("Error deleting task:", error.response);
@@ -64,7 +64,7 @@ export default function TodoList() {
 
     try {
       const response = await axios.put(
-        http://127.0.0.1:8000/todolist/${taskToUpdate.id}/,
+        `http://127.0.0.1:8000/todolist/${taskToUpdate.id}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t, i) =>
@@ -88,7 +88,7 @@ export default function TodoList() {
 
     try {
       const response = await axios.put(
-        http://127.0.0.1:8000/todolist/${taskId}/,
+        `http://127.0.0.1:8000/todolist/${taskId}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t) =>

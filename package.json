@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homescreen": "https:/https://joiceprincipio.github.io/Task-Manager/",
+  "homescreen": "https:/https://joiceprincipio.github.io/Todo-Application/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
