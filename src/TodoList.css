@@ -1,143 +1,116 @@
-/* CSS variables for easier theme switching */
-:root {
-  --background-color-light: #ffffff; /* Light mode background color */
-  --text-color-light: #000000; /* Light mode text color */
-  --background-color-dark: #000000; /* Dark mode background color */
-  --text-color-dark: #ffffff; /* Dark mode text color */
-  --background-image-light: url("/src/assets/PINK.jpg"); /* Path to light mode background image */
-  --background-image-dark: url("/src/assets/DARK.jpg"); /* Path to dark mode background image */
-  --button-bg-color: #ffffff; /* Default button background color */
-  --button-icon-color: black; /* Default button icon color */
-  --container-background-light: #ffefef; /*Light mode container backgrond*/
-  --container-background-dark: #333; /*Dark mode container background*/
-}
-
-/* Styles for the light theme */
-[data-theme="light"] body {
-  background-image: var(--background-image-light);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: var(--text-color-light);
-}
-
-/* Styles for the dark theme */
-[data-theme="dark"] body {
-  background-image: var(--background-image-dark);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: var(--text-color-dark);
-  --button-bg-color: #333; /* Dark mode button background color */
-  --button-icon-color: white; /* Dark mode button icon color */
-}
-
-/* Base styles for the body */
 body {
-  transition: background-color 0.2s, color 0.2s; /* Smooth transition for theme changes */
-  background-color: var(--background-color-light);
-  color: var(--text-color-light);
-  font-family: Georgia, serif;
+  font-family: Arial, sans-serif;
   margin: 0;
+  padding: 0;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--text-color);
 }
 
-/* Styles for the main container */
+:root {
+  --background-image: url("./assets/PINK.jpg");
+  --text-color: #000000;
+}
+
+[data-theme="dark"] {
+  --background-image: url("./assets/DARK.jpg");
+  --text-color: white;
+}
+
 .container {
   max-width: 500px;
   margin: 20px auto;
   padding: 20px;
-  background-color: var(--container-background-light);
-  border-radius: 10px;
-  font-family: Georgia, serif;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark mode styles for the container */
 [data-theme="dark"] .container {
-  background-color: var(--container-background-dark);
+  background-color: rgba(34, 34, 34, 0.8);
 }
 
-/* Styles for the task grid (if used) */
-.task-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 20px;
+.header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Styles for each task item */
-.task-item {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto; /* Adjust columns as needed */
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-/* Styles for the checkbox */
-.task-item input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* Styles for the task text */
-.task-item span {
-  flex-grow: 1; /* Allow text to expand to fill available space */
-}
-
-/* Styles for edit and delete buttons */
-.task-item .edit-button,
-.task-item .delete-button {
-  margin-left: 10px;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* Style icons within the buttons */
-.task-item .edit-button i,
-.task-item .delete-button i {
-  color: inherit;
-}
-
-/* Styles for the add task button */
-button.add-task-button {
-  padding: 8px 12px;
-  cursor: pointer;
-  background-color: var(--button-bg-color);
-  color: var(--button-icon-color);
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Style the icon within the add task button */
-button.add-task-button i {
-  color: var(--button-icon-color);
-}
-
-/* Styles for the input container */
 .input-container {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  margin-bottom: 10px;
 }
 
 input[type="text"] {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-.toggletbutton {
-  align-self: center;
+.togglebutton {
+  color: var(--text-color);
+}
+
+.add-task-button {
+  position: relative;
+  left: 10px;
+  width: 470px;
+  padding: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.filterbtn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #f0f0f0;
 }
 
 ul {
   list-style: none;
-  padding-left: 0;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  cursor: pointer;
+  height: 45px;
+  width: 45px;
+  border-radius: 7px;
+}
+
+.togglebutton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.edit-button {
+  position: relative;
+  left: 70px;
 }

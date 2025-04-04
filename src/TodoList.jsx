@@ -1,25 +1,129 @@
-import { useState, useEffect } from "react"; // Import necessary modules from React library
-import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS for icons
-import "./TodoList.css"; // Import custom CSS styles for the TodoList component
+import { useState, useEffect } from "react";
+import axios from "axios";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { HiPencilAlt } from "react-icons/hi";
+import "./TodoList.css";
 
 export default function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
-  const [completedTasks, setCompletedTasks] = useState([]);
   const [filter, setFilter] = useState("All");
   const [theme, setTheme] = useState("light");
+  const [editingTaskId, setEditingTaskId] = useState(null); // Track the task being edited
+  const [editedTitle, setEditedTitle] = useState(""); // Track the new title for the task
 
+  // Fetch tasks from the backend
   useEffect(() => {
-    // useEffect hook to load theme from local storage on component mount
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    }
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/todolist/");
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    fetchTasks();
   }, []);
 
-  // Function to toggle between light and dark themes
+  // Add a new task
+  const addTask = async () => {
+    if (task.trim() === "") return;
+
+    const newTask = { title: task, completed: false };
+    console.log("Payload being sent:", newTask); // Debugging
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/todolist/",
+        newTask
+      );
+      setTasks([...tasks, response.data]);
+      setTask("");
+    } catch (error) {
+      console.error("Error adding task:", error.response);
+    }
+  };
+
+  // Delete a task
+  const removeTask = async (index) => {
+    const taskToDelete = tasks[index];
+
+    try {
+      await axios.delete(http://127.0.0.1:8000/todolist/${taskToDelete.id}/);
+      setTasks(tasks.filter((_, i) => i !== index));
+    } catch (error) {
+      console.error("Error deleting task:", error.response);
+    }
+  };
+
+  // Update task completion status
+  const toggleCompletion = async (index) => {
+    const taskToUpdate = tasks[index];
+    const updatedTask = { ...taskToUpdate, completed: !taskToUpdate.completed };
+
+    try {
+      const response = await axios.put(
+        http://127.0.0.1:8000/todolist/${taskToUpdate.id}/,
+        updatedTask
+      );
+      const updatedTasks = tasks.map((t, i) =>
+        i === index ? response.data : t
+      );
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error("Error updating task:", error.response);
+    }
+  };
+
+  // Enable edit mode for a task
+  const enableEdit = (task) => {
+    setEditingTaskId(task.id);
+    setEditedTitle(task.title);
+  };
+
+  // Save the edited task
+  const saveEdit = async (taskId) => {
+    const updatedTask = { title: editedTitle };
+
+    try {
+      const response = await axios.put(
+        http://127.0.0.1:8000/todolist/${taskId}/,
+        updatedTask
+      );
+      const updatedTasks = tasks.map((t) =>
+        t.id === taskId ? response.data : t
+      );
+      setTasks(updatedTasks);
+      setEditingTaskId(null); // Exit edit mode
+      setEditedTitle("");
+    } catch (error) {
+      console.error("Error editing task:", error.response);
+    }
+  };
+
+  // Cancel editing
+  const cancelEdit = () => {
+    setEditingTaskId(null);
+    setEditedTitle("");
+  };
+
+  // Filter tasks based on the selected filter
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "All") return true;
+    if (filter === "Completed") return task.completed;
+    if (filter === "Pending") return !task.completed;
+    return true;
+  });
+
+  // Handle Enter key press for adding a task
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      addTask();
+    }
+  };
+
+  // Toggle theme between light and dark
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -27,113 +131,84 @@ export default function TodoList() {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  // Function to remove a task from the list
-  const removeTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
-  };
-
-  // Function to add or update a task
-  const addTask = () => {
-    if (task.trim() === "") return;
-    if (editIndex !== null) {
-      // Update existing task if in edit mode
-      const updatedTasks = tasks.map((t, index) =>
-        index === editIndex ? { ...t, text: task } : t
-      );
-      setTasks(updatedTasks);
-      setEditIndex(null);
-    } else {
-      setTasks([...tasks, { text: task, priority: false }]);
-      setCompletedTasks([...completedTasks, false]);
-    }
-    setTask("");
-  };
-
-  // Function to set edit mode for a task
-  const editTask = (index) => {
-    setTask(tasks[index].text);
-    setEditIndex(index);
-  };
-
-  // Function to toggle task completion status
-  const toggleCompletion = (index) => {
-    // Update the completedTasks array to toggle the completion status of the task at the specified index
-    const updatedCompletedTasks = completedTasks.map((completed, i) =>
-      i === index ? !completed : completed
-    );
-    setCompletedTasks(updatedCompletedTasks);
-  };
-
-  // Filter tasks based on the selected filter
-  const filteredTasks = tasks.filter((_, index) => {
-    if (filter === "All") return true;
-    if (filter === "Completed") return completedTasks[index];
-    if (filter === "Pending") return !completedTasks[index];
-    return true;
-  });
-
-  // Function to handle Enter key press for adding tasks
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      addTask();
-    }
-  };
-
   return (
-    <div className="container">
-      <h2>To-Do List</h2>
-      <button className="togglebutton" onClick={toggleTheme}>
-        {theme === "light" ? (
-          <i className="fas fa-moon"></i>
-        ) : (
-          <i className="fas fa-sun"></i>
-        )}
-      </button>
+    <>
+      <div className="header">
+        <h2>Task Manager</h2>
+      </div>
+      <div className="container">
+        <button className="togglebutton" onClick={toggleTheme}>
+          {theme === "light" ? (
+            <i className="fas fa-moon"></i>
+          ) : (
+            <i className="fas fa-sun"></i>
+          )}
+        </button>
 
-      <div className="input-container">
-        <input
-          type="text"
-          placeholder="Add a new task"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
+        <div className="input-container">
+          <input
+            type="text"
+            placeholder="Add a new task"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+        </div>
         <button className="add-task-button" onClick={addTask}>
           <i className="fas fa-plus"></i>
         </button>
+        <div className="filters">
+          <button onClick={() => setFilter("All")} className="filterbtn">
+            All
+          </button>
+          <button onClick={() => setFilter("Completed")} className="filterbtn">
+            Completed
+          </button>
+          <button onClick={() => setFilter("Pending")} className="filterbtn">
+            Pending
+          </button>
+        </div>
+        <ul>
+          {filteredTasks.map((t, index) => (
+            <li
+              key={index}
+              style={{
+                textDecoration: t.completed ? "line-through" : "none",
+              }}
+            >
+              {editingTaskId === t.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editedTitle}
+                    onChange={(e) => setEditedTitle(e.target.value)}
+                  />
+                  <button onClick={() => saveEdit(t.id)}>Save</button>
+                  <button onClick={cancelEdit}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="checkbox"
+                    checked={t.completed}
+                    onChange={() => toggleCompletion(index)}
+                  />
+                  <span>{t.title}</span>
+                  <button onClick={() => enableEdit(t)} className="edit-button">
+                    <HiPencilAlt size="19" />
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => removeTask(index)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
-      <div>
-        {/* Buttons for filtering task */}
-        <button onClick={() => setFilter("All")}>All</button>
-        <button onClick={() => setFilter("Completed")}>Completed</button>
-        <button onClick={() => setFilter("Pending")}>Pending</button>
-      </div>
-      <ul>
-        {filteredTasks.map((t, index) => (
-          <li
-            key={index}
-            style={{
-              textDecoration: completedTasks[index] ? "line-through" : "none",
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={completedTasks[index]}
-              onChange={() => toggleCompletion(index)}
-            />
-            <span>{t.text}</span>
-            {/* Edit icon*/}
-            <button className="edit-button" onClick={() => editTask(index)}>
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-            {/* Delete icon*/}
-            <button className="delete-button" onClick={() => removeTask(index)}>
-              <i className="fas fa-trash"></i>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 }
