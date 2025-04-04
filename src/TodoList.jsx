@@ -16,7 +16,9 @@ export default function TodoList() {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/todolist/");
+        const response = await axios.get(
+          "https://django-backend-nb2g.onrender.com/api/todos/"
+        );
         setTasks(response.data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -35,7 +37,7 @@ export default function TodoList() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/todolist/",
+        "https://django-backend-nb2g.onrender.com/api/todos/",
         newTask
       );
       setTasks([...tasks, response.data]);
@@ -50,7 +52,9 @@ export default function TodoList() {
     const taskToDelete = tasks[index];
 
     try {
-      await axios.delete(`http://127.0.0.1:8000/todolist/${taskToDelete.id}/`);
+      await axios.delete(
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskToDelete.id}/`
+      );
       setTasks(tasks.filter((_, i) => i !== index));
     } catch (error) {
       console.error("Error deleting task:", error.response);
@@ -64,7 +68,7 @@ export default function TodoList() {
 
     try {
       const response = await axios.put(
-        `http://127.0.0.1:8000/todolist/${taskToUpdate.id}/`,
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskToUpdate.id}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t, i) =>
@@ -88,7 +92,7 @@ export default function TodoList() {
 
     try {
       const response = await axios.put(
-        `http://127.0.0.1:8000/todolist/${taskId}/`,
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskId}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t) =>
