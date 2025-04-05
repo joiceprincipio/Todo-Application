@@ -9,8 +9,8 @@ export default function TodoList() {
   const [task, setTask] = useState("");
   const [filter, setFilter] = useState("All");
   const [theme, setTheme] = useState("light");
-  const [editingTaskId, setEditingTaskId] = useState(null); // Track the task being edited
-  const [editedTitle, setEditedTitle] = useState(""); // Track the new title for the task
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editedTitle, setEditedTitle] = useState("");
 
   // Fetch tasks from the backend
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function TodoList() {
     if (task.trim() === "") return;
 
     const newTask = { title: task, completed: false };
-    console.log("Payload being sent:", newTask); // Debugging
+    console.log("Payload being sent:", newTask);
 
     try {
       const response = await axios.post(
@@ -53,7 +53,7 @@ export default function TodoList() {
 
     try {
       await axios.delete(
-        `https://django-backend-nb2g.onrender.com/api/todos/${taskToDelete.id}/`
+        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskToDelete.id}/`
       );
       setTasks(tasks.filter((_, i) => i !== index));
     } catch (error) {
@@ -61,14 +61,14 @@ export default function TodoList() {
     }
   };
 
-  // Update task completion status
+  // Complete Status
   const toggleCompletion = async (index) => {
     const taskToUpdate = tasks[index];
     const updatedTask = { ...taskToUpdate, completed: !taskToUpdate.completed };
 
     try {
       const response = await axios.put(
-        `https://django-backend-nb2g.onrender.com/api/todos/${taskToUpdate.id}/`,
+        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskToUpdate.id}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t, i) =>
@@ -92,14 +92,14 @@ export default function TodoList() {
 
     try {
       const response = await axios.put(
-        `https://django-backend-nb2g.onrender.com/api/todos/${taskId}/`,
+        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskId}/`,
         updatedTask
       );
       const updatedTasks = tasks.map((t) =>
         t.id === taskId ? response.data : t
       );
       setTasks(updatedTasks);
-      setEditingTaskId(null); // Exit edit mode
+      setEditingTaskId(null);
       setEditedTitle("");
     } catch (error) {
       console.error("Error editing task:", error.response);
