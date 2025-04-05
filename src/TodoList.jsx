@@ -100,6 +100,7 @@ export default function TodoList() {
       );
       setTasks(updatedTasks);
       setEditingTaskId(null);
+      setEditingTaskId(null);
       setEditedTitle("");
     } catch (error) {
       console.error("Error editing task:", error.response);
