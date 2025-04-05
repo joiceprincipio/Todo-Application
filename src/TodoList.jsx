@@ -33,8 +33,6 @@ export default function TodoList() {
     if (task.trim() === "") return;
 
     const newTask = { title: task, completed: false };
-    console.log("Payload being sent:", newTask);
-
     try {
       const response = await axios.post(
         "https://django-backend-nb2g.onrender.com/api/todos/",
@@ -53,7 +51,7 @@ export default function TodoList() {
 
     try {
       await axios.delete(
-        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskToDelete.id}/`
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskToDelete.id}/`
       );
       setTasks(tasks.filter((_, i) => i !== index));
     } catch (error) {
@@ -61,15 +59,13 @@ export default function TodoList() {
     }
   };
 
-  // Complete Status
+  // Toggle completion status
   const toggleCompletion = async (index) => {
     const taskToUpdate = tasks[index];
-    const updatedTask = { ...taskToUpdate, completed: !taskToUpdate.completed };
-
     try {
-      const response = await axios.put(
-        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskToUpdate.id}/`,
-        updatedTask
+      const response = await axios.patch(
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskToUpdate.id}/`,
+        { completed: !taskToUpdate.completed }
       );
       const updatedTasks = tasks.map((t, i) =>
         i === index ? response.data : t
@@ -80,7 +76,7 @@ export default function TodoList() {
     }
   };
 
-  // Enable edit mode for a task
+  // Enable edit mode
   const enableEdit = (task) => {
     setEditingTaskId(task.id);
     setEditedTitle(task.title);
@@ -88,18 +84,15 @@ export default function TodoList() {
 
   // Save the edited task
   const saveEdit = async (taskId) => {
-    const updatedTask = { title: editedTitle };
-
     try {
-      const response = await axios.put(
-        `"https://django-backend-nb2g.onrender.com/api/todos/"${taskId}/`,
-        updatedTask
+      const response = await axios.patch(
+        `https://django-backend-nb2g.onrender.com/api/todos/${taskId}/`,
+        { title: editedTitle }
       );
       const updatedTasks = tasks.map((t) =>
         t.id === taskId ? response.data : t
       );
       setTasks(updatedTasks);
-      setEditingTaskId(null);
       setEditingTaskId(null);
       setEditedTitle("");
     } catch (error) {
@@ -113,7 +106,7 @@ export default function TodoList() {
     setEditedTitle("");
   };
 
-  // Filter tasks based on the selected filter
+  // Filter tasks
   const filteredTasks = tasks.filter((task) => {
     if (filter === "All") return true;
     if (filter === "Completed") return task.completed;
@@ -121,14 +114,14 @@ export default function TodoList() {
     return true;
   });
 
-  // Handle Enter key press for adding a task
+  // Handle Enter key for adding
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       addTask();
     }
   };
 
-  // Toggle theme between light and dark
+  // Toggle theme
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -162,6 +155,7 @@ export default function TodoList() {
         <button className="add-task-button" onClick={addTask}>
           <i className="fas fa-plus"></i>
         </button>
+
         <div className="filters">
           <button onClick={() => setFilter("All")} className="filterbtn">
             All
@@ -173,6 +167,7 @@ export default function TodoList() {
             Pending
           </button>
         </div>
+
         <ul>
           {filteredTasks.map((t, index) => (
             <li
